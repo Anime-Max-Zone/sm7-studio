@@ -14,6 +14,12 @@
     background:linear-gradient(90deg,#38f9d7,#43e97b);-webkit-background-clip:text;
     background-clip:text;color:transparent}
   #spd{font-size:13px;opacity:.75;letter-spacing:2px}
+  #mute{position:fixed;top:14px;right:14px;z-index:40;width:46px;height:46px;
+    border-radius:50%;border:1px solid rgba(120,255,230,.35);cursor:pointer;
+    background:rgba(255,255,255,.07);color:#bffcf0;font-size:20px;
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    display:grid;place-items:center;transition:transform .1s}
+  #mute:active{transform:scale(.92)}
   #overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;text-align:center;
     padding:24px;background:radial-gradient(circle at 50% 40%,rgba(20,45,100,.9),rgba(3,5,12,.97));
     -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -23,11 +29,11 @@
     -webkit-background-clip:text;background-clip:text;color:transparent}
   #sub{font-size:13.5px;line-height:1.8;opacity:.75;margin-bottom:14px;max-width:420px}
   #final{font-size:15px;margin-bottom:18px;opacity:.95;line-height:1.7}
-  button{padding:15px 40px;font-size:16px;font-weight:800;letter-spacing:2px;border:0;
+  button#btn{padding:15px 40px;font-size:16px;font-weight:800;letter-spacing:2px;border:0;
     border-radius:999px;cursor:pointer;color:#04121a;
     background:linear-gradient(135deg,#43e97b,#38f9d7);
     box-shadow:0 12px 34px rgba(67,233,123,.4);transition:transform .1s}
-  button:active{transform:scale(.95)}
+  button#btn:active{transform:scale(.95)}
   #touch{position:fixed;left:0;right:0;bottom:0;z-index:15;display:none;
     justify-content:space-between;padding:0 20px 26px;pointer-events:none}
   #touch div{pointer-events:auto;width:86px;height:86px;border-radius:50%;font-size:32px;
@@ -41,6 +47,8 @@
 <body>
 
 <div id="hud"><span id="score">0</span><span id="spd">0 KM/H</span></div>
+
+<button id="mute" title="Sound on/off">🔊</button>
 
 <div id="touch">
   <div id="tleft">◀</div>
@@ -62,6 +70,292 @@
 
 <script type="module">
 import * as THREE from 'three';
+
+/* ============================================================
+   AUDIO ENGINE — procedural music + SFX (no external files)
+   ============================================================ */
+class AudioEngine {
+  constructor() {
+    this.ctx = null;
+    this.master = null;
+    this.musicGain = null;
+    this.sfxGain = null;
+    this.noiseBuffer = null;
+    this.musicStarted = false;
+    this.musicTimer = null;
+    this.nextNoteTime = 0;
+    this.step = 0;
+    this.muted = false;
+    this.engineOsc = null;
+    this.engineOsc2 = null;
+    this.engineFilter = null;
+    this.engineGain = null;
+  }
+
+  init() {
+    if (this.ctx) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    this.ctx = new AC();
+
+    this.master = this.ctx.createGain();
+    this.master.gain.value = this.muted ? 0 : 0.9;
+    this.master.connect(this.ctx.destination);
+
+    this.musicGain = this.ctx.createGain();
+    this.musicGain.gain.value = 0.20;
+    this.musicGain.connect(this.master);
+
+    this.sfxGain = this.ctx.createGain();
+    this.sfxGain.gain.value = 0.65;
+    this.sfxGain.connect(this.master);
+
+    // white-noise buffer for hats & crash
+    const len = Math.floor(this.ctx.sampleRate * 1.0);
+    const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+    this.noiseBuffer = buf;
+  }
+
+  resume() {
+    if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+  }
+
+  toggleMute() {
+    this.muted = !this.muted;
+    if (this.master && this.ctx) {
+      this.master.gain.setTargetAtTime(this.muted ? 0 : 0.9, this.ctx.currentTime, 0.05);
+    }
+    return this.muted;
+  }
+
+  /* ---------- generic tone helper ---------- */
+  tone(freq, time, dur, type = 'sine', vol = 0.2, filterFreq = 0, bus = null) {
+    const c = this.ctx;
+    const o = c.createOscillator();
+    const g = c.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, time);
+
+    let head = o;
+    if (filterFreq > 0) {
+      const f = c.createBiquadFilter();
+      f.type = 'lowpass';
+      f.frequency.value = filterFreq;
+      f.Q.value = 1;
+      o.connect(f);
+      head = f;
+    }
+    head.connect(g);
+    g.connect(bus || this.musicGain);
+
+    g.gain.setValueAtTime(0.0001, time);
+    g.gain.linearRampToValueAtTime(vol, time + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+
+    o.start(time);
+    o.stop(time + dur + 0.05);
+  }
+
+  /* ---------- drums ---------- */
+  kick(time) {
+    const c = this.ctx;
+    const o = c.createOscillator();
+    const g = c.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, time);
+    o.frequency.exponentialRampToValueAtTime(45, time + 0.12);
+    g.gain.setValueAtTime(0.55, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time + 0.20);
+    o.connect(g); g.connect(this.musicGain);
+    o.start(time); o.stop(time + 0.22);
+  }
+
+  hat(time, vol = 0.035) {
+    const c = this.ctx;
+    const src = c.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    const f = c.createBiquadFilter();
+    f.type = 'highpass';
+    f.frequency.value = 7500;
+    const g = c.createGain();
+    g.gain.setValueAtTime(vol, time);
+    g.gain.exponentialRampToValueAtTime(0.0001, time + 0.045);
+    src.connect(f); f.connect(g); g.connect(this.musicGain);
+    src.start(time); src.stop(time + 0.06);
+  }
+
+  /* ---------- music sequencer ---------- */
+  startMusic() {
+    if (!this.ctx || this.musicStarted) return;
+    this.musicStarted = true;
+    this.step = 0;
+    this.nextNoteTime = this.ctx.currentTime + 0.15;
+    this.musicTimer = setInterval(() => this.scheduler(), 25);
+  }
+
+  scheduler() {
+    if (!this.ctx) return;
+    const stepDur = 60 / 128 / 2; // 8th notes @ 128 BPM
+    // recover if the tab was throttled in background
+    if (this.nextNoteTime < this.ctx.currentTime - 0.4) {
+      this.nextNoteTime = this.ctx.currentTime + 0.05;
+    }
+    while (this.nextNoteTime < this.ctx.currentTime + 0.15) {
+      this.playStep(this.step, this.nextNoteTime, stepDur);
+      this.nextNoteTime += stepDur;
+      this.step = (this.step + 1) % 32;
+    }
+  }
+
+  playStep(step, time, dur) {
+    // Am – F – C – G
+    const chords = [
+      { bass: 110.00, notes: [220.00, 261.63, 329.63, 440.00] },
+      { bass:  87.31, notes: [174.61, 220.00, 261.63, 349.23] },
+      { bass: 130.81, notes: [261.63, 329.63, 392.00, 523.25] },
+      { bass:  98.00, notes: [196.00, 246.94, 293.66, 392.00] }
+    ];
+    const bar = Math.floor(step / 8);
+    const pos = step % 8;
+    const ch  = chords[bar];
+
+    if (pos === 0 || pos === 4) this.kick(time);
+    if (pos % 2 === 1) this.hat(time, 0.03);
+
+    if (pos === 0 || pos === 3 || pos === 6) {
+      this.tone(ch.bass, time, dur * 1.7, 'sawtooth', 0.20, 620);
+    }
+
+    const arp = ch.notes[pos % ch.notes.length];
+    this.tone(arp, time, dur * 0.85, 'square', 0.045, 2600);
+
+    if (pos === 0) {
+      this.tone(ch.notes[0] / 2, time, dur * 8, 'sine', 0.055);
+      this.tone(ch.notes[2] / 2, time, dur * 8, 'sine', 0.035);
+    }
+  }
+
+  /* ---------- engine ---------- */
+  startEngine() {
+    if (!this.ctx || this.engineOsc) return;
+    const c = this.ctx;
+
+    this.engineOsc = c.createOscillator();
+    this.engineOsc.type = 'sawtooth';
+    this.engineOsc.frequency.value = 60;
+
+    this.engineOsc2 = c.createOscillator();
+    this.engineOsc2.type = 'triangle';
+    this.engineOsc2.frequency.value = 61;
+
+    this.engineFilter = c.createBiquadFilter();
+    this.engineFilter.type = 'lowpass';
+    this.engineFilter.frequency.value = 420;
+    this.engineFilter.Q.value = 5;
+
+    this.engineGain = c.createGain();
+    this.engineGain.gain.value = 0;
+
+    this.engineOsc.connect(this.engineFilter);
+    this.engineOsc2.connect(this.engineFilter);
+    this.engineFilter.connect(this.engineGain);
+    this.engineGain.connect(this.sfxGain);
+
+    this.engineOsc.start();
+    this.engineOsc2.start();
+  }
+
+  setEngine(speed) {
+    if (!this.ctx || !this.engineGain) return;
+    const t = this.ctx.currentTime;
+    const base = 42 + speed * 0.55;
+    this.engineOsc.frequency.setTargetAtTime(base, t, 0.08);
+    this.engineOsc2.frequency.setTargetAtTime(base * 1.012, t, 0.08);
+    this.engineFilter.frequency.setTargetAtTime(320 + speed * 9, t, 0.08);
+    this.engineGain.gain.setTargetAtTime(0.045, t, 0.15);
+  }
+
+  engineOff() {
+    if (!this.ctx || !this.engineGain) return;
+    this.engineGain.gain.setTargetAtTime(0, this.ctx.currentTime, 0.10);
+  }
+
+  /* ---------- SFX ---------- */
+  crash() {
+    if (!this.ctx) return;
+    const c = this.ctx, t = c.currentTime;
+
+    // noise explosion
+    const src = c.createBufferSource();
+    src.buffer = this.noiseBuffer;
+    const f = c.createBiquadFilter();
+    f.type = 'lowpass';
+    f.frequency.setValueAtTime(5000, t);
+    f.frequency.exponentialRampToValueAtTime(180, t + 0.65);
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.95, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.75);
+    src.connect(f); f.connect(g); g.connect(this.sfxGain);
+    src.start(t); src.stop(t + 0.85);
+
+    // deep boom
+    const o = c.createOscillator();
+    const og = c.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(130, t);
+    o.frequency.exponentialRampToValueAtTime(28, t + 0.55);
+    og.gain.setValueAtTime(0.85, t);
+    og.gain.exponentialRampToValueAtTime(0.001, t + 0.65);
+    o.connect(og); og.connect(this.sfxGain);
+    o.start(t); o.stop(t + 0.7);
+
+    // metallic screech
+    const s = c.createOscillator();
+    const sg = c.createGain();
+    s.type = 'sawtooth';
+    s.frequency.setValueAtTime(1800, t);
+    s.frequency.exponentialRampToValueAtTime(220, t + 0.4);
+    sg.gain.setValueAtTime(0.14, t);
+    sg.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+    s.connect(sg); sg.connect(this.sfxGain);
+    s.start(t); s.stop(t + 0.5);
+  }
+
+  ping() {
+    if (!this.ctx) return;
+    const c = this.ctx, t = c.currentTime;
+    [880, 1320].forEach((freq, i) => {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = 'sine';
+      o.frequency.value = freq;
+      const st = t + i * 0.08;
+      g.gain.setValueAtTime(0.0001, st);
+      g.gain.linearRampToValueAtTime(0.16, st + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, st + 0.35);
+      o.connect(g); g.connect(this.sfxGain);
+      o.start(st); o.stop(st + 0.4);
+    });
+  }
+
+  click() {
+    if (!this.ctx) return;
+    const c = this.ctx, t = c.currentTime;
+    const o = c.createOscillator();
+    const g = c.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(660, t);
+    o.frequency.exponentialRampToValueAtTime(990, t + 0.08);
+    g.gain.setValueAtTime(0.18, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+    o.connect(g); g.connect(this.sfxGain);
+    o.start(t); o.stop(t + 0.16);
+  }
+}
+
+const audio = new AudioEngine();
 
 /* ============ CONSTANTS ============ */
 const ROAD_W = 14;
@@ -254,7 +548,8 @@ const G = {
   dist: 0,
   px: 0,
   vx: 0,
-  best: Number(localStorage.getItem('nh3d_best') || 0)
+  best: Number(localStorage.getItem('nh3d_best') || 0),
+  milestone: 0
 };
 
 const keys = { left: false, right: false };
@@ -267,6 +562,7 @@ const elTitle = document.getElementById('title');
 const elSub   = document.getElementById('sub');
 const elFinal = document.getElementById('final');
 const elBtn   = document.getElementById('btn');
+const elMute  = document.getElementById('mute');
 
 /* ============ WORLD MOVEMENT ============ */
 function moveWorld(dt, spd) {
@@ -283,11 +579,19 @@ function moveWorld(dt, spd) {
 
 /* ============ START / RESET ============ */
 function startGame() {
+  // ---- audio bootstrap (must happen inside a user gesture)
+  audio.init();
+  audio.resume();
+  audio.click();
+  audio.startEngine();
+  audio.startMusic();
+
   G.mode = 'play';
   G.speed = 28;
   G.dist = 0;
   G.px = 0;
   G.vx = 0;
+  G.milestone = 0;
   player.position.set(0, 0, 0);
   player.rotation.set(0, 0, 0);
   camera.position.set(0, 6.5, 12);
@@ -299,6 +603,9 @@ function startGame() {
 
 function gameOver() {
   G.mode = 'over';
+  audio.crash();
+  audio.engineOff();
+
   const score = Math.floor(G.dist);
   if (score > G.best) {
     G.best = score;
@@ -338,6 +645,14 @@ bind('tright', 1);
 
 elBtn.addEventListener('click', startGame);
 
+elMute.addEventListener('click', e => {
+  e.stopPropagation();
+  audio.init();
+  audio.resume();
+  const m = audio.toggleMute();
+  elMute.textContent = m ? '🔇' : '🔊';
+});
+
 /* ============ UPDATE ============ */
 function update(dt) {
   // --- input
@@ -349,6 +664,10 @@ function update(dt) {
   // --- speed ramps up with distance
   G.speed = Math.min(96, 28 + G.dist * 0.05);
   G.dist += G.speed * dt;
+
+  // --- milestone chime every 500 m
+  const ms = Math.floor(G.dist / 500);
+  if (ms > G.milestone) { G.milestone = ms; audio.ping(); }
 
   // --- lateral steering (with inertia)
   G.vx += axis * 80 * dt;
@@ -371,6 +690,9 @@ function update(dt) {
   // --- world scroll
   moveWorld(dt, G.speed);
 
+  // --- engine sound follows speed
+  audio.setEngine(G.speed);
+
   // --- traffic
   for (const t of traffic) {
     t.position.z += (G.speed - t.userData.ownSpeed) * dt;
@@ -390,6 +712,7 @@ function update(dt) {
 function idle(dt) {
   moveWorld(dt, 16);
   camera.lookAt(0, 1.5, -14);
+  audio.engineOff();
 }
 
 /* ============ LOOP ============ */
