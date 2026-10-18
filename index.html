@@ -1,1910 +1,411 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="hi">
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
-  >
-
-  <meta
-    name="description"
-    content="SM Gaming is a fast and mobile-friendly gaming portal with browser games across action, arcade, puzzle, racing, sports, strategy, adventure and casual categories."
-  >
-
-  <meta
-    name="keywords"
-    content="SM Gaming, online games, free browser games, browser games, mobile games, arcade games, puzzle games, racing games, action games, sports games, strategy games, SM Studio"
-  >
-
-  <meta
-    name="author"
-    content="SM Studio"
-  >
-
-  <meta
-    name="theme-color"
-    content="#07070d"
-  >
-
-  <meta
-    name="robots"
-    content="index, follow"
-  >
-
-  <link
-    rel="canonical"
-    href="https://sm7-studio.online/"
-  >
-
-
-  <!-- =====================================================
-       OPEN GRAPH
-  ====================================================== -->
-
-  <meta
-    property="og:title"
-    content="SM Gaming - Play Free Browser Games"
-  >
-
-  <meta
-    property="og:description"
-    content="Play fast and mobile-friendly browser games across action, arcade, puzzle, racing, sports, strategy and more."
-  >
-
-  <meta
-    property="og:type"
-    content="website"
-  >
-
-  <meta
-    property="og:url"
-    content="https://sm7-studio.online/"
-  >
-
-  <meta
-    property="og:image"
-    content="https://sm7-studio.online/favicon.png"
-  >
-
-  <meta
-    property="og:site_name"
-    content="SM Gaming"
-  >
-
-
-  <!-- =====================================================
-       TWITTER
-  ====================================================== -->
-
-  <meta
-    name="twitter:card"
-    content="summary"
-  >
-
-  <meta
-    name="twitter:title"
-    content="SM Gaming - Play Free Browser Games"
-  >
-
-  <meta
-    name="twitter:description"
-    content="Play mobile-friendly browser games across multiple categories."
-  >
-
-  <meta
-    name="twitter:image"
-    content="https://sm7-studio.online/favicon.png"
-  >
-
-
-  <!-- =====================================================
-       GOOGLE ADSENSE
-       EXISTING ADSENSE ACCOUNT
-  ====================================================== -->
-
-  <script
-    async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2090259959275063"
-    crossorigin="anonymous">
-  </script>
-
-  <meta
-    name="google-adsense-account"
-    content="ca-pub-2090259959275063"
-  >
-
-
-  <!-- =====================================================
-       TITLE
-  ====================================================== -->
-
-  <title>SM Gaming - Play Free Browser Games | SM Studio</title>
-
-
-  <!-- =====================================================
-       FAVICON
-  ====================================================== -->
-
-  <link
-    rel="icon"
-    type="image/png"
-    sizes="16x16"
-    href="favicon.png"
-  >
-
-  <link
-    rel="icon"
-    type="image/png"
-    sizes="32x32"
-    href="favicon.png"
-  >
-
-  <link
-    rel="icon"
-    type="image/png"
-    sizes="48x48"
-    href="favicon.png"
-  >
-
-  <link
-    rel="icon"
-    type="image/png"
-    sizes="192x192"
-    href="favicon.png"
-  >
-
-  <link
-    rel="icon"
-    type="image/png"
-    sizes="512x512"
-    href="favicon.png"
-  >
-
-  <link
-    rel="apple-touch-icon"
-    sizes="180x180"
-    href="favicon.png"
-  >
-
-  <link
-    rel="manifest"
-    href="site.webmanifest"
-  >
-
-  <meta
-    name="msapplication-TileImage"
-    content="favicon.png"
-  >
-
-
-  <!-- =====================================================
-       GOOGLE FONTS
-  ====================================================== -->
-
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&display=swap"
-    rel="stylesheet"
-  >
-
-
-  <!-- =====================================================
-       FONT AWESOME
-  ====================================================== -->
-
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  >
-
-
-  <!-- =====================================================
-       MAIN CSS
-  ====================================================== -->
-
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Neon Highway 3D</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#05070f;color:#fff;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;touch-action:none}
+  #hud{position:fixed;top:14px;left:16px;z-index:10;pointer-events:none;
+    text-shadow:0 2px 12px #000;line-height:1.35}
+  #score{font-size:30px;font-weight:800;letter-spacing:1px;display:block;
+    background:linear-gradient(90deg,#38f9d7,#43e97b);-webkit-background-clip:text;
+    background-clip:text;color:transparent}
+  #spd{font-size:13px;opacity:.75;letter-spacing:2px}
+  #overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;text-align:center;
+    padding:24px;background:radial-gradient(circle at 50% 40%,rgba(20,45,100,.9),rgba(3,5,12,.97));
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  #overlay.hide{display:none}
+  h1{font-size:clamp(26px,7vw,50px);letter-spacing:3px;margin-bottom:10px;
+    background:linear-gradient(90deg,#38f9d7,#43e97b,#38f9d7);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  #sub{font-size:13.5px;line-height:1.8;opacity:.75;margin-bottom:14px;max-width:420px}
+  #final{font-size:15px;margin-bottom:18px;opacity:.95;line-height:1.7}
+  button{padding:15px 40px;font-size:16px;font-weight:800;letter-spacing:2px;border:0;
+    border-radius:999px;cursor:pointer;color:#04121a;
+    background:linear-gradient(135deg,#43e97b,#38f9d7);
+    box-shadow:0 12px 34px rgba(67,233,123,.4);transition:transform .1s}
+  button:active{transform:scale(.95)}
+  #touch{position:fixed;left:0;right:0;bottom:0;z-index:15;display:none;
+    justify-content:space-between;padding:0 20px 26px;pointer-events:none}
+  #touch div{pointer-events:auto;width:86px;height:86px;border-radius:50%;font-size:32px;
+    display:grid;place-items:center;user-select:none;color:#bffcf0;
+    background:rgba(255,255,255,.07);border:1px solid rgba(120,255,230,.3);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  #touch div:active{background:rgba(67,233,123,.35)}
+  @media (pointer:coarse){#touch{display:flex}}
+</style>
 </head>
-
-
 <body>
 
-
-<!-- =====================================================
-     NAVBAR
-====================================================== -->
-
-<header class="site-header">
-
-  <nav
-    class="navbar"
-    aria-label="Main Navigation"
-  >
-
-    <div class="container nav-container">
-
-
-      <a
-        href="./"
-        class="brand"
-        aria-label="SM Gaming Home"
-      >
-
-        <span class="brand-icon">
-
-          <i
-            class="fas fa-gamepad"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-        <span class="brand-text">
-          SM <strong>Gaming</strong>
-        </span>
-
-      </a>
-
-
-      <ul
-        class="nav-links"
-        id="navLinks"
-      >
-
-        <li>
-          <a href="#games">
-            Games
-          </a>
-        </li>
-
-        <li>
-          <a href="#categories">
-            Categories
-          </a>
-        </li>
-
-        <li>
-          <a href="#featured">
-            Featured
-          </a>
-        </li>
-
-        <li>
-          <a href="#how-to-play">
-            How to Play
-          </a>
-        </li>
-
-      </ul>
-
-
-      <div class="nav-actions">
-
-        <button
-          class="favorite-nav-btn"
-          id="favoritesBtn"
-          type="button"
-          aria-label="Show favorite games"
-        >
-
-          <i
-            class="fas fa-heart"
-            aria-hidden="true"
-          ></i>
-
-          <span
-            class="favorite-count"
-            id="favoriteCount"
-          >0</span>
-
-        </button>
-
-
-        <button
-          class="nav-toggle"
-          id="navToggle"
-          type="button"
-          aria-label="Open menu"
-          aria-expanded="false"
-          aria-controls="navLinks"
-        >
-
-          <i
-            class="fas fa-bars"
-            aria-hidden="true"
-          ></i>
-
-        </button>
-
-      </div>
-
-    </div>
-
-  </nav>
-
-</header>
-
-
-<!-- =====================================================
-     MAIN CONTENT
-====================================================== -->
-
-<main>
-
-
-<!-- =====================================================
-     HERO
-====================================================== -->
-
-<section class="hero">
-
-  <div class="hero-grid"></div>
-
-  <div class="hero-glow hero-glow-one"></div>
-
-  <div class="hero-glow hero-glow-two"></div>
-
-
-  <div class="container hero-content">
-
-
-    <div class="hero-badge">
-
-      <span class="badge-dot"></span>
-
-      <i
-        class="fas fa-gamepad"
-        aria-hidden="true"
-      ></i>
-
-      30+ Browser Games
-
-    </div>
-
-
-    <h1>
-      PLAY.
-      <span>COMPETE.</span>
-      HAVE FUN.
-    </h1>
-
-
-    <p class="hero-description">
-
-      Discover a growing collection of fast,
-      mobile-friendly browser games.
-      Choose your favorite category and start playing.
-
-    </p>
-
-
-    <div class="hero-buttons">
-
-      <a
-        href="#games"
-        class="btn btn-primary"
-      >
-
-        <i
-          class="fas fa-play"
-          aria-hidden="true"
-        ></i>
-
-        Explore Games
-
-      </a>
-
-
-      <a
-        href="#categories"
-        class="btn btn-secondary"
-      >
-
-        <i
-          class="fas fa-layer-group"
-          aria-hidden="true"
-        ></i>
-
-        Browse Categories
-
-      </a>
-
-    </div>
-
-
-    <div class="hero-mini-stats">
-
-
-      <div class="mini-stat">
-
-        <strong>
-          36+
-        </strong>
-
-        <span>
-          Games
-        </span>
-
-      </div>
-
-
-      <div class="mini-divider"></div>
-
-
-      <div class="mini-stat">
-
-        <strong>
-          8
-        </strong>
-
-        <span>
-          Categories
-        </span>
-
-      </div>
-
-
-      <div class="mini-divider"></div>
-
-
-      <div class="mini-stat">
-
-        <strong>
-          100%
-        </strong>
-
-        <span>
-          Mobile Friendly
-        </span>
-
-      </div>
-
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     ADSENSE DISPLAY AD
-     SM Gaming Top Ad
-     Slot: 8551481777
-====================================================== -->
-
-<section
-  class="ad-section"
-  aria-label="Advertisement"
->
-
-  <div class="container">
-
-    <div class="ad-label">
-      Advertisement
-    </div>
-
-
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-2090259959275063"
-      data-ad-slot="8551481777"
-      data-ad-format="auto"
-      data-full-width-responsive="true">
-    </ins>
-
-
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     FEATURED GAME
-====================================================== -->
-
-<section
-  class="featured-section"
-  id="featured"
->
-
-  <div class="container">
-
-
-    <div class="section-heading">
-
-      <div>
-
-        <span class="section-label">
-          FEATURED GAME
-        </span>
-
-        <h2>
-          Ready to Play?
-        </h2>
-
-      </div>
-
-
-      <a
-        href="#games"
-        class="view-all"
-      >
-
-        View all games
-
-        <i
-          class="fas fa-arrow-right"
-          aria-hidden="true"
-        ></i>
-
-      </a>
-
-    </div>
-
-
-    <article class="featured-card">
-
-
-      <div class="featured-visual">
-
-        <div class="featured-grid"></div>
-
-        <div class="featured-orb"></div>
-
-        <div class="featured-car">
-          🏎️
-        </div>
-
-        <div class="featured-speed speed-one">
-          ━━━━━━━━━
-        </div>
-
-        <div class="featured-speed speed-two">
-          ━━━━━
-        </div>
-
-        <div class="featured-speed speed-three">
-          ━━━━━━━
-        </div>
-
-        <div class="featured-tag">
-          RACING
-        </div>
-
-      </div>
-
-
-      <div class="featured-content">
-
-        <span class="eyebrow">
-          FEATURED
-        </span>
-
-
-        <h3>
-          Neon Drift
-        </h3>
-
-
-        <p>
-          Push your reflexes to the limit and master
-          high-speed neon racing.
-        </p>
-
-
-        <div class="featured-meta">
-
-          <span>
-
-            <i
-              class="fas fa-car"
-              aria-hidden="true"
-            ></i>
-
-            Racing
-
-          </span>
-
-
-          <span>
-
-            <i
-              class="fas fa-mobile-screen"
-              aria-hidden="true"
-            ></i>
-
-            Mobile Friendly
-
-          </span>
-
-        </div>
-
-
-        <button
-          class="btn btn-primary featured-play"
-          type="button"
-          data-game="neon-drift"
-        >
-
-          <i
-            class="fas fa-play"
-            aria-hidden="true"
-          ></i>
-
-          Play Neon Drift
-
-        </button>
-
-      </div>
-
-    </article>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     GAME LIBRARY
-====================================================== -->
-
-<section
-  class="games-section"
-  id="games"
->
-
-  <div class="container">
-
-
-    <div class="section-heading games-heading">
-
-      <div>
-
-        <span class="section-label">
-          GAME LIBRARY
-        </span>
-
-        <h2>
-          Choose Your Game
-        </h2>
-
-        <p>
-          Find something fun and start playing.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="game-tools">
-
-
-      <div class="search-box">
-
-        <i
-          class="fas fa-search"
-          aria-hidden="true"
-        ></i>
-
-
-        <input
-          type="search"
-          id="gameSearch"
-          placeholder="Search games..."
-          autocomplete="off"
-          aria-label="Search games"
-        >
-
-
-        <button
-          type="button"
-          id="clearSearch"
-          class="clear-search"
-          aria-label="Clear search"
-          hidden
-        >
-
-          <i
-            class="fas fa-xmark"
-            aria-hidden="true"
-          ></i>
-
-        </button>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="mobile-filter-btn"
-        id="mobileFilterBtn"
-      >
-
-        <i
-          class="fas fa-filter"
-          aria-hidden="true"
-        ></i>
-
-        Filters
-
-      </button>
-
-    </div>
-
-
-    <!-- FILTERS -->
-
-    <div
-      class="filter-wrap"
-      id="filterWrap"
-    >
-
-
-      <button
-        class="filter-btn active"
-        type="button"
-        data-filter="all"
-      >
-        All
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Action"
-      >
-        Action
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Arcade"
-      >
-        Arcade
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Puzzle"
-      >
-        Puzzle
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Racing"
-      >
-        Racing
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Sports"
-      >
-        Sports
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Strategy"
-      >
-        Strategy
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Casual"
-      >
-        Casual
-      </button>
-
-
-      <button
-        class="filter-btn"
-        type="button"
-        data-filter="Adventure"
-      >
-        Adventure
-      </button>
-
-    </div>
-
-
-    <div
-      class="active-filter-info"
-      id="activeFilterInfo"
-      hidden
-    ></div>
-
-
-    <!-- GAME GRID -->
-
-    <div
-      class="game-grid"
-      id="gameGrid"
-    ></div>
-
-
-    <!-- EMPTY STATE -->
-
-    <div
-      class="empty-games"
-      id="emptyGames"
-      hidden
-    >
-
-      <div class="empty-icon">
-
-        <i
-          class="fas fa-gamepad"
-          aria-hidden="true"
-        ></i>
-
-      </div>
-
-
-      <h3>
-        No games found
-      </h3>
-
-
-      <p>
-        Try another search or category.
-      </p>
-
-
-      <button
-        type="button"
-        class="btn btn-secondary"
-        id="resetGames"
-      >
-
-        <i
-          class="fas fa-rotate-left"
-          aria-hidden="true"
-        ></i>
-
-        Show All Games
-
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     CATEGORIES
-====================================================== -->
-
-<section
-  class="categories-section"
-  id="categories"
->
-
-  <div class="container">
-
-
-    <div class="section-heading centered">
-
-      <span class="section-label">
-        CATEGORIES
-      </span>
-
-
-      <h2>
-        Play Your Way
-      </h2>
-
-
-      <p>
-        Pick a category and discover games made for
-        different moods and play styles.
-      </p>
-
-    </div>
-
-
-    <div class="category-grid">
-
-
-      <button
-        class="category-card category-action"
-        type="button"
-        data-category="Action"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-crosshairs"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Action
-        </strong>
-
-
-        <small>
-          Fast &amp; intense
-        </small>
-
-      </button>
-
-
-      <button
-        class="category-card"
-        type="button"
-        data-category="Arcade"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-gamepad"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Arcade
-        </strong>
-
-
-        <small>
-          Quick sessions
-        </small>
-
-      </button>
-
-
-      <button
-        class="category-card"
-        type="button"
-        data-category="Puzzle"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-puzzle-piece"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Puzzle
-        </strong>
-
-
-        <small>
-          Test your brain
-        </small>
-
-      </button>
-
-
-      <button
-        class="category-card"
-        type="button"
-        data-category="Racing"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-flag-checkered"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Racing
-        </strong>
-
-
-        <small>
-          Speed &amp; drift
-        </small>
-
-      </button>
-
-
-      <button
-        class="category-card"
-        type="button"
-        data-category="Sports"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-trophy"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Sports
-        </strong>
-
-
-        <small>
-          Compete &amp; score
-        </small>
-
-      </button>
-
-
-      <button
-        class="category-card"
-        type="button"
-        data-category="Strategy"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-chess"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Strategy
-        </strong>
-
-
-        <small>
-          Think ahead
-        </small>
-
-      </button>
-
-
-      <button
-        class="category-card"
-        type="button"
-        data-category="Casual"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-seedling"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Casual
-        </strong>
-
-
-        <small>
-          Relax &amp; play
-        </small>
-
-      </button>
-
-
-      <button
-        class="category-card"
-        type="button"
-        data-category="Adventure"
-      >
-
-        <span class="category-icon">
-
-          <i
-            class="fas fa-compass"
-            aria-hidden="true"
-          ></i>
-
-        </span>
-
-
-        <strong>
-          Adventure
-        </strong>
-
-
-        <small>
-          Explore worlds
-        </small>
-
-      </button>
-
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     WHY SM GAMING
-====================================================== -->
-
-<section class="why-section">
-
-  <div class="container">
-
-
-    <div class="section-heading centered">
-
-      <span class="section-label">
-        WHY SM GAMING
-      </span>
-
-
-      <h2>
-        Gaming Without the Hassle
-      </h2>
-
-
-      <p>
-        Built with a simple goal: make finding a fun game
-        quick and easy.
-      </p>
-
-    </div>
-
-
-    <div class="why-grid">
-
-
-      <article class="why-card">
-
-        <div class="why-number">
-          01
-        </div>
-
-
-        <div class="why-icon">
-
-          <i
-            class="fas fa-bolt"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-
-        <h3>
-          Quick to Start
-        </h3>
-
-
-        <p>
-          Browse the library, choose a game and start your
-          session without complicated navigation.
-        </p>
-
-      </article>
-
-
-      <article class="why-card">
-
-        <div class="why-number">
-          02
-        </div>
-
-
-        <div class="why-icon">
-
-          <i
-            class="fas fa-mobile-screen-button"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-
-        <h3>
-          Mobile Friendly
-        </h3>
-
-
-        <p>
-          The gaming portal is designed to work comfortably
-          on phones, tablets and desktop screens.
-        </p>
-
-      </article>
-
-
-      <article class="why-card">
-
-        <div class="why-number">
-          03
-        </div>
-
-
-        <div class="why-icon">
-
-          <i
-            class="fas fa-layer-group"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-
-        <h3>
-          Multiple Categories
-        </h3>
-
-
-        <p>
-          From racing and action to puzzles and strategy,
-          there is a category for different play styles.
-        </p>
-
-      </article>
-
-
-      <article class="why-card">
-
-        <div class="why-number">
-          04
-        </div>
-
-
-        <div class="why-icon">
-
-          <i
-            class="fas fa-heart"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-
-        <h3>
-          Save Favorites
-        </h3>
-
-
-        <p>
-          Mark games as favorites on your device so you can
-          find them quickly during your next visit.
-        </p>
-
-      </article>
-
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     HOW TO PLAY
-====================================================== -->
-
-<section
-  class="how-section"
-  id="how-to-play"
->
-
-  <div class="container">
-
-
-    <div class="section-heading centered">
-
-      <span class="section-label">
-        HOW TO PLAY
-      </span>
-
-
-      <h2>
-        Three Simple Steps
-      </h2>
-
-
-      <p>
-        Getting started takes only a few seconds.
-      </p>
-
-    </div>
-
-
-    <div class="steps-grid">
-
-
-      <article class="step-card">
-
-        <div class="step-number">
-          1
-        </div>
-
-
-        <div class="step-icon">
-
-          <i
-            class="fas fa-search"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-
-        <h3>
-          Find a Game
-        </h3>
-
-
-        <p>
-          Search the library or choose a category to find
-          something you want to play.
-        </p>
-
-      </article>
-
-
-      <article class="step-card">
-
-        <div class="step-number">
-          2
-        </div>
-
-
-        <div class="step-icon">
-
-          <i
-            class="fas fa-play"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-
-        <h3>
-          Open the Game
-        </h3>
-
-
-        <p>
-          Select a game card to see its details and open
-          the corresponding game page.
-        </p>
-
-      </article>
-
-
-      <article class="step-card">
-
-        <div class="step-number">
-          3
-        </div>
-
-
-        <div class="step-icon">
-
-          <i
-            class="fas fa-gamepad"
-            aria-hidden="true"
-          ></i>
-
-        </div>
-
-
-        <h3>
-          Start Playing
-        </h3>
-
-
-        <p>
-          Have fun, improve your skills and come back for
-          another game whenever you want.
-        </p>
-
-      </article>
-
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =====================================================
-     CTA
-====================================================== -->
-
-<section class="cta-section">
-
-  <div class="cta-glow"></div>
-
-
-  <div class="container cta-content">
-
-
-    <div class="cta-icon">
-
-      <i
-        class="fas fa-gamepad"
-        aria-hidden="true"
-      ></i>
-
-    </div>
-
-
-    <span class="section-label">
-      LET'S PLAY
-    </span>
-
-
-    <h2>
-      Your Next Game Is Waiting.
-    </h2>
-
-
-    <p>
-      Explore the game library and find your next
-      favorite browser game.
-    </p>
-
-
-    <a
-      href="#games"
-      class="btn btn-primary"
-    >
-
-      <i
-        class="fas fa-rocket"
-        aria-hidden="true"
-      ></i>
-
-      Start Playing
-
-    </a>
-
-
-  </div>
-
-</section>
-
-
-</main>
-
-
-<!-- =====================================================
-     GAME MODAL
-====================================================== -->
-
-<div
-  class="modal"
-  id="gameModal"
-  aria-hidden="true"
->
-
-
-  <div
-    class="modal-overlay"
-    id="modalOverlay"
-  ></div>
-
-
-  <div
-    class="modal-card"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="modalTitle"
-  >
-
-
-    <button
-      type="button"
-      class="modal-close"
-      id="modalClose"
-      aria-label="Close game details"
-    >
-
-      <i
-        class="fas fa-xmark"
-        aria-hidden="true"
-      ></i>
-
-    </button>
-
-
-    <div
-      class="modal-game-icon"
-      id="modalIcon"
-    >
-      🎮
-    </div>
-
-
-    <span
-      class="modal-category"
-      id="modalCategory"
-    >
-      GAME
-    </span>
-
-
-    <h3 id="modalTitle">
-      Game
-    </h3>
-
-
-    <p
-      class="modal-description"
-      id="modalDescription"
-    >
-      Game description.
-    </p>
-
-
-    <div class="modal-actions">
-
-
-      <a
-        href="#"
-        class="btn btn-primary"
-        id="modalPlay"
-      >
-
-        <i
-          class="fas fa-play"
-          aria-hidden="true"
-        ></i>
-
-        Play Now
-
-      </a>
-
-
-      <button
-        type="button"
-        class="btn btn-secondary"
-        id="modalFavorite"
-      >
-
-        <i
-          class="far fa-heart"
-          aria-hidden="true"
-        ></i>
-
-        Favorite
-
-      </button>
-
-
-    </div>
-
-
-    <p class="modal-note">
-
-      <i
-        class="fas fa-circle-info"
-        aria-hidden="true"
-      ></i>
-
-      Game pages are opened from the SM Gaming library.
-
-    </p>
-
-
-  </div>
-
+<div id="hud"><span id="score">0</span><span id="spd">0 KM/H</span></div>
+
+<div id="touch">
+  <div id="tleft">◀</div>
+  <div id="tright">▶</div>
 </div>
 
-
-<!-- =====================================================
-     BACK TO TOP
-====================================================== -->
-
-<button
-  type="button"
-  class="back-to-top"
-  id="backToTop"
-  aria-label="Back to top"
->
-
-  <i
-    class="fas fa-arrow-up"
-    aria-hidden="true"
-  ></i>
-
-</button>
-
-
-<!-- =====================================================
-     FOOTER
-====================================================== -->
-
-<footer class="site-footer">
-
-  <div class="container">
-
-
-    <div class="footer-grid">
-
-
-      <!-- BRAND -->
-
-      <div class="footer-brand">
-
-
-        <a
-          href="./"
-          class="brand footer-brand-logo"
-          aria-label="SM Gaming Home"
-        >
-
-          <span class="brand-icon">
-
-            <i
-              class="fas fa-gamepad"
-              aria-hidden="true"
-            ></i>
-
-          </span>
-
-
-          <span class="brand-text">
-            SM <strong>Gaming</strong>
-          </span>
-
-        </a>
-
-
-        <p>
-          A growing gaming portal by SM Studio,
-          built for quick and enjoyable browser gaming.
-        </p>
-
-
-        <div class="social-links">
-
-
-          <a
-            href="https://x.com/SapneswarM7"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="SM Studio on X"
-          >
-
-            <i
-              class="fab fa-x-twitter"
-              aria-hidden="true"
-            ></i>
-
-          </a>
-
-
-          <a
-            href="https://www.instagram.com/sm__studio7/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="SM Studio on Instagram"
-          >
-
-            <i
-              class="fab fa-instagram"
-              aria-hidden="true"
-            ></i>
-
-          </a>
-
-
-          <a
-            href="https://t.me/sm_studio7"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="SM Studio on Telegram"
-          >
-
-            <i
-              class="fab fa-telegram-plane"
-              aria-hidden="true"
-            ></i>
-
-          </a>
-
-
-        </div>
-
-      </div>
-
-
-      <!-- GAMES -->
-
-      <div class="footer-column">
-
-        <h3>
-          Games
-        </h3>
-
-
-        <a href="#games">
-          All Games
-        </a>
-
-
-        <a href="#featured">
-          Featured
-        </a>
-
-
-        <a href="#categories">
-          Categories
-        </a>
-
-
-        <a href="#games">
-          New Games
-        </a>
-
-      </div>
-
-
-      <!-- EXPLORE -->
-
-      <div class="footer-column">
-
-        <h3>
-          Explore
-        </h3>
-
-
-        <a href="#games">
-          Action
-        </a>
-
-
-        <a href="#games">
-          Puzzle
-        </a>
-
-
-        <a href="#games">
-          Racing
-        </a>
-
-
-        <a href="#games">
-          Sports
-        </a>
-
-      </div>
-
-
-      <!-- LEGAL -->
-
-      <div class="footer-column">
-
-        <h3>
-          Legal
-        </h3>
-
-
-        <a href="privacy-policy.html">
-          Privacy Policy
-        </a>
-
-
-        <a href="terms.html">
-          Terms &amp; Conditions
-        </a>
-
-
-        <a href="contact.html">
-          Contact
-        </a>
-
-
-        <a href="mailto:support@sm7-studio.online">
-          Email Support
-        </a>
-
-      </div>
-
-
-    </div>
-
-
-    <div class="footer-divider"></div>
-
-
-    <div class="footer-bottom">
-
-
-      <p>
-        Made with
-        <span aria-hidden="true">❤️</span>
-        by SM Studio
-      </p>
-
-
-      <p>
-        © 2026 SM Gaming. All rights reserved.
-      </p>
-
-
-    </div>
-
-
+<div id="overlay">
+  <div>
+    <h1 id="title">NEON HIGHWAY 3D</h1>
+    <p id="sub">◀ ▶ ya A / D se car chalao<br>Traffic se bacho — speed har second badhegi</p>
+    <div id="final"></div>
+    <button id="btn">START GAME</button>
   </div>
+</div>
 
-</footer>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
 
+<script type="module">
+import * as THREE from 'three';
 
-<!-- =====================================================
-     JAVASCRIPT
-====================================================== -->
+/* ============ CONSTANTS ============ */
+const ROAD_W = 14;
+const LANES  = [-4.6, 0, 4.6];
+const CYCLE  = 306;              // world recycling length
+const COLORS = [0xff4d6d, 0xffd166, 0x4cc9f0, 0xb5179e, 0x80ed99, 0xff9f1c];
 
-<script
-  src="script.js"
-  defer
-></script>
+/* ============ RENDERER / SCENE ============ */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x070a16);
+scene.fog = new THREE.Fog(0x070a16, 80, 250);
 
+const camera = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, 0.1, 600);
+camera.position.set(0, 6.5, 12);
+camera.lookAt(0, 1.4, -14);
 
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+/* ============ LIGHTS ============ */
+scene.add(new THREE.HemisphereLight(0x9db4ff, 0x0a0a14, 1.5));
+
+const sun = new THREE.DirectionalLight(0xffffff, 1.9);
+sun.position.set(-30, 55, 15);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -45, right: 45, top: 45, bottom: -45, near: 1, far: 170 });
+sun.shadow.bias = -0.0006;
+sun.target.position.set(0, 0, -30);
+scene.add(sun, sun.target);
+
+/* ============ GROUND & ROAD ============ */
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(400, 900),
+  new THREE.MeshStandardMaterial({ color: 0x080c18, roughness: 1 })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.position.z = -300;
+ground.receiveShadow = true;
+scene.add(ground);
+
+const road = new THREE.Mesh(
+  new THREE.PlaneGeometry(ROAD_W, 900),
+  new THREE.MeshStandardMaterial({ color: 0x1a2032, roughness: 0.85, metalness: 0.15 })
+);
+road.rotation.x = -Math.PI / 2;
+road.position.set(0, 0.02, -300);
+road.receiveShadow = true;
+scene.add(road);
+
+// glowing edge lines
+const edgeMat = new THREE.MeshStandardMaterial({
+  color: 0x38f9d7, emissive: 0x38f9d7, emissiveIntensity: 1.6, roughness: 0.4
+});
+for (const x of [-6.9, 6.9]) {
+  const line = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.06, 900), edgeMat);
+  line.position.set(x, 0.05, -300);
+  scene.add(line);
+}
+
+/* ============ LANE DASHES ============ */
+const dashes = [];
+const dashGeo = new THREE.BoxGeometry(0.34, 0.06, 4.2);
+const dashMat = new THREE.MeshStandardMaterial({
+  color: 0xdfe9ff, emissive: 0x7fb0ff, emissiveIntensity: 0.7, roughness: 0.5
+});
+for (const x of [-2.3, 2.3]) {
+  for (let z = 30; z >= -276; z -= 9) {
+    const d = new THREE.Mesh(dashGeo, dashMat);
+    d.position.set(x, 0.06, z);
+    scene.add(d);
+    dashes.push(d);
+  }
+}
+
+/* ============ STREET LIGHTS (props) ============ */
+const props = [];
+const poleGeo = new THREE.BoxGeometry(0.24, 4.2, 0.24);
+const bulbGeo = new THREE.SphereGeometry(0.36, 10, 8);
+const poleMat = new THREE.MeshStandardMaterial({ color: 0x2a3350, roughness: 0.8 });
+const bulbMat = new THREE.MeshStandardMaterial({
+  color: 0xaaffee, emissive: 0x38f9d7, emissiveIntensity: 2.4
+});
+for (let z = 30; z >= -276; z -= 18) {
+  for (const side of [-1, 1]) {
+    const g = new THREE.Group();
+    const pole = new THREE.Mesh(poleGeo, poleMat);
+    pole.position.y = 2.1; pole.castShadow = true; g.add(pole);
+    const bulb = new THREE.Mesh(bulbGeo, bulbMat);
+    bulb.position.y = 4.25; g.add(bulb);
+    g.position.set(side * 8.3, 0, z);
+    scene.add(g);
+    props.push(g);
+  }
+}
+
+/* ============ CAR FACTORY ============ */
+function createCar(color) {
+  const g = new THREE.Group();
+
+  const bodyMat = new THREE.MeshStandardMaterial({ color, metalness: 0.6, roughness: 0.35 });
+  const glassMat = new THREE.MeshStandardMaterial({ color: 0x0b1622, metalness: 0.95, roughness: 0.08 });
+  const tyreMat = new THREE.MeshStandardMaterial({ color: 0x11141c, roughness: 0.95 });
+
+  const body = new THREE.Mesh(new THREE.BoxGeometry(1.85, 0.62, 4.1), bodyMat);
+  body.position.y = 0.63;
+  body.castShadow = true;
+  g.add(body);
+
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.58, 1.95), glassMat);
+  cabin.position.set(0, 1.18, -0.1);
+  cabin.castShadow = true;
+  g.add(cabin);
+
+  const spoiler = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.09, 0.4), bodyMat);
+  spoiler.position.set(0, 1.02, 1.85);
+  spoiler.castShadow = true;
+  g.add(spoiler);
+
+  const wheelGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.32, 14);
+  wheelGeo.rotateZ(Math.PI / 2);
+  for (const [x, z] of [[-0.95, 1.35], [0.95, 1.35], [-0.95, -1.35], [0.95, -1.35]]) {
+    const w = new THREE.Mesh(wheelGeo, tyreMat);
+    w.position.set(x, 0.38, z);
+    w.castShadow = true;
+    g.add(w);
+  }
+
+  // headlights (front = -z)
+  const headMat = new THREE.MeshStandardMaterial({
+    color: 0xffffff, emissive: 0xbfe9ff, emissiveIntensity: 3
+  });
+  const headGeo = new THREE.BoxGeometry(0.45, 0.16, 0.08);
+  for (const x of [-0.62, 0.62]) {
+    const h = new THREE.Mesh(headGeo, headMat);
+    h.position.set(x, 0.72, -2.06);
+    g.add(h);
+  }
+
+  // taillights
+  const tailMat = new THREE.MeshStandardMaterial({
+    color: 0xff2d55, emissive: 0xff2d55, emissiveIntensity: 2.6
+  });
+  for (const x of [-0.62, 0.62]) {
+    const t = new THREE.Mesh(headGeo, tailMat);
+    t.position.set(x, 0.72, 2.06);
+    g.add(t);
+  }
+
+  g.userData.bodyMat = bodyMat;
+  return g;
+}
+
+/* ============ PLAYER ============ */
+const player = createCar(0x00e5ff);
+scene.add(player);
+
+/* ============ TRAFFIC ============ */
+const traffic = [];
+for (let i = 0; i < 9; i++) {
+  const c = createCar(COLORS[i % COLORS.length]);
+  scene.add(c);
+  traffic.push(c);
+}
+
+function respawnTraffic(t, initial) {
+  const lane = LANES[Math.floor(Math.random() * LANES.length)];
+  t.position.x = lane + (Math.random() - 0.5) * 0.5;
+  t.position.z = initial
+    ? -50 - Math.random() * 210
+    : -215 - Math.random() * 70;
+  t.userData.ownSpeed = 8 + Math.random() * 13;
+  t.userData.bodyMat.color.setHex(COLORS[Math.floor(Math.random() * COLORS.length)]);
+}
+
+/* ============ GAME STATE ============ */
+const G = {
+  mode: 'menu',       // menu | play | over
+  speed: 28,
+  dist: 0,
+  px: 0,
+  vx: 0,
+  best: Number(localStorage.getItem('nh3d_best') || 0)
+};
+
+const keys = { left: false, right: false };
+let touchAxis = 0;
+
+const elScore = document.getElementById('score');
+const elSpd   = document.getElementById('spd');
+const elOverlay = document.getElementById('overlay');
+const elTitle = document.getElementById('title');
+const elSub   = document.getElementById('sub');
+const elFinal = document.getElementById('final');
+const elBtn   = document.getElementById('btn');
+
+/* ============ WORLD MOVEMENT ============ */
+function moveWorld(dt, spd) {
+  const dz = spd * dt;
+  for (const d of dashes) {
+    d.position.z += dz;
+    if (d.position.z > 30) d.position.z -= CYCLE;
+  }
+  for (const p of props) {
+    p.position.z += dz;
+    if (p.position.z > 30) p.position.z -= CYCLE;
+  }
+}
+
+/* ============ START / RESET ============ */
+function startGame() {
+  G.mode = 'play';
+  G.speed = 28;
+  G.dist = 0;
+  G.px = 0;
+  G.vx = 0;
+  player.position.set(0, 0, 0);
+  player.rotation.set(0, 0, 0);
+  camera.position.set(0, 6.5, 12);
+
+  for (const t of traffic) respawnTraffic(t, true);
+
+  elOverlay.classList.add('hide');
+}
+
+function gameOver() {
+  G.mode = 'over';
+  const score = Math.floor(G.dist);
+  if (score > G.best) {
+    G.best = score;
+    localStorage.setItem('nh3d_best', String(score));
+  }
+  elTitle.textContent = 'CRASH!';
+  elSub.textContent = 'Traffic se takra gaye 🚗💥';
+  elFinal.innerHTML = `Score: <b>${score}</b> m &nbsp;·&nbsp; Best: <b>${G.best}</b> m`;
+  elBtn.textContent = 'RESTART';
+  elOverlay.classList.remove('hide');
+}
+
+/* ============ INPUT ============ */
+addEventListener('keydown', e => {
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') { keys.left = true; e.preventDefault(); }
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') { keys.right = true; e.preventDefault(); }
+  if ((k === ' ' || k === 'Enter') && G.mode !== 'play') { startGame(); e.preventDefault(); }
+});
+addEventListener('keyup', e => {
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') keys.left = false;
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') keys.right = false;
+});
+
+const bind = (id, val) => {
+  const el = document.getElementById(id);
+  const on  = e => { e.preventDefault(); touchAxis = val; };
+  const off = e => { e.preventDefault(); touchAxis = 0; };
+  el.addEventListener('pointerdown', on);
+  el.addEventListener('pointerup', off);
+  el.addEventListener('pointerleave', off);
+  el.addEventListener('pointercancel', off);
+};
+bind('tleft', -1);
+bind('tright', 1);
+
+elBtn.addEventListener('click', startGame);
+
+/* ============ UPDATE ============ */
+function update(dt) {
+  // --- input
+  let axis = 0;
+  if (keys.left) axis -= 1;
+  if (keys.right) axis += 1;
+  if (touchAxis !== 0) axis = touchAxis;
+
+  // --- speed ramps up with distance
+  G.speed = Math.min(96, 28 + G.dist * 0.05);
+  G.dist += G.speed * dt;
+
+  // --- lateral steering (with inertia)
+  G.vx += axis * 80 * dt;
+  G.vx *= Math.exp(-9 * dt);
+  G.px += G.vx * dt;
+
+  const limit = ROAD_W / 2 - 1.15;
+  if (G.px >  limit) { G.px =  limit; G.vx = 0; }
+  if (G.px < -limit) { G.px = -limit; G.vx = 0; }
+
+  player.position.x = G.px;
+  player.rotation.z = THREE.MathUtils.lerp(player.rotation.z, -G.vx * 0.035, 0.16);
+  player.rotation.y = THREE.MathUtils.lerp(player.rotation.y, -G.vx * 0.022, 0.12);
+
+  // --- camera follow
+  camera.position.x += (G.px * 0.55 - camera.position.x) * Math.min(1, 6 * dt);
+  camera.position.y = 6.5;
+  camera.lookAt(G.px * 0.4, 1.5, -14);
+
+  // --- world scroll
+  moveWorld(dt, G.speed);
+
+  // --- traffic
+  for (const t of traffic) {
+    t.position.z += (G.speed - t.userData.ownSpeed) * dt;
+    if (t.position.z > 26) respawnTraffic(t, false);
+
+    if (Math.abs(t.position.x - G.px) < 1.68 &&
+        Math.abs(t.position.z - player.position.z) < 3.75) {
+      gameOver();
+      return;
+    }
+  }
+
+  elScore.textContent = Math.floor(G.dist);
+  elSpd.textContent = Math.round(G.speed * 2.6) + ' KM/H';
+}
+
+function idle(dt) {
+  moveWorld(dt, 16);
+  camera.lookAt(0, 1.5, -14);
+}
+
+/* ============ LOOP ============ */
+const clock = new THREE.Clock();
+function loop() {
+  requestAnimationFrame(loop);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  if (G.mode === 'play') update(dt);
+  else idle(dt);
+  renderer.render(scene, camera);
+}
+
+// initial traffic placement
+for (const t of traffic) respawnTraffic(t, true);
+
+loop();
+</script>
 </body>
-
 </html>
